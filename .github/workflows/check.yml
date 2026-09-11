@@ -3,7 +3,7 @@ name: TCG Drop Watcher
 "on":
   schedule:
     # alle 15 Minuten - anpassbar, nicht zu aggressiv wählen
-    - cron: "*/15 * * * *"
+    - cron: "*/55 * * * *"
   workflow_dispatch: {}  # erlaubt manuelles Auslösen über den "Run workflow"-Button
 
 # WICHTIG: Ohne dies darf der Workflow nicht ins Repo zurückschreiben (state.json),
