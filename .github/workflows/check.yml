@@ -3,7 +3,7 @@ name: TCG Drop Watcher
 "on":
   schedule:
     # alle 15 Minuten - anpassbar, nicht zu aggressiv wählen
-    - cron: "*/55 * * * *"
+    - cron: "*/15 * * * *"
   workflow_dispatch: {}  # erlaubt manuelles Auslösen über den "Run workflow"-Button
 
 # WICHTIG: Ohne dies darf der Workflow nicht ins Repo zurückschreiben (state.json),
@@ -15,6 +15,7 @@ permissions:
 jobs:
   check-stock:
     runs-on: ubuntu-latest
+    timeout-minutes: 12  # harte Grenze: GitHub bricht selbst ab statt in den naechsten 15-Min-Takt reinzulaufen
     steps:
       - name: Repo auschecken
         uses: actions/checkout@v4
