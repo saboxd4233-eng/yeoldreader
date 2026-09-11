@@ -1,0 +1,19 @@
+{
+  "discord_webhook_url": "https://discord.com/api/webhooks/DEIN_WEBHOOK_HIER",
+  "telegram_bot_token": "DEIN_TELEGRAM_BOT_TOKEN",
+  "telegram_chat_id": "DEINE_CHAT_ID",
+  "items": [
+    {
+      "name": "Beispiel: One Piece OP-12 Booster Box (Shop XY)",
+      "url": "https://www.beispielshop.de/produkt/op12-booster-box",
+      "keyword_in_stock": "In den Warenkorb",
+      "keyword_out_of_stock": "Ausverkauft"
+    },
+    {
+      "name": "Beispiel: Pokemon ETB (Shop AB)",
+      "url": "https://www.beispielshop2.de/produkt/etb",
+      "keyword_in_stock": "add to cart",
+      "keyword_out_of_stock": "sold out"
+    }
+  ]
+}
