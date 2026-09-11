@@ -1,1 +1,47 @@
+name: TCG Drop Watcher
+on:
+  schedule:
+    # alle 15 Minuten - anpassbar, nicht zu aggressiv wählen
+    - cron: "*/15 * * * *"
+  workflow_dispatch: {}  # erlaubt manuelles Auslösen über den "Run workflow"-Button
 
+# WICHTIG: Ohne dies darf der Workflow nicht ins Repo zurückschreiben (state.json),
+# und der Bot "vergisst" nach jedem Lauf alles - genau das war der Bug, der zu
+# endlosen Wiederholungs-Alarmen gefuehrt hat.
+permissions:
+  contents: write
+
+jobs:
+  check-stock:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repo auschecken
+        uses: actions/checkout@v4
+
+      - name: Python einrichten
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Abhängigkeiten installieren
+        run: pip install -r requirements.txt
+
+      - name: Stock-Check ausführen
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python stock_checker.py
+
+      - name: State committen (damit Status erhalten bleibt)
+        run: |
+          git config user.name "tcg-watcher-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add state.json
+          if git diff --staged --quiet; then
+            echo "Keine Aenderung an state.json, kein Commit noetig."
+          else
+            git commit -m "Update state.json [skip ci]"
+            git push
+            echo "state.json erfolgreich aktualisiert und gepusht."
+          fi
