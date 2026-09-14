@@ -1,6 +1,6 @@
 name: TCG Drop Watcher
 
-"on":
+on:
   schedule:
     # alle 15 Minuten - anpassbar, nicht zu aggressiv wählen
     - cron: "*/15 * * * *"
